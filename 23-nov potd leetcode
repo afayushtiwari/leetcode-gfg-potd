@@ -1,0 +1,59 @@
+//1262. Greatest Sum Divisible by Three
+//QUESTION
+Given an integer array nums, return the maximum possible sum of elements of the array such that it is divisible by three.
+Example 1:
+Input: nums = [3,6,5,1,8]
+Output: 18
+Explanation: Pick numbers 3, 6, 1 and 8 their sum is 18 (maximum sum divisible by 3).
+
+Example 2:
+Input: nums = [4]
+Output: 0
+Explanation: Since 4 is not divisible by 3, do not pick any number.
+
+//APPROACH
+USING GREEADY APPROACH AND SORTING DONE IT
+STEPS:
+1)first create two vectors and iniitlaize sum to 0
+2)check for remainders as 3 can have 0,1,2 remainders 
+if rem==1 then push it to vector1
+else if rem==2 push it to vector2
+3)sort both the vectors and initialize another variable res=0
+4) now the real game begins now check if rem==1
+then in the option 1 if vetor1.size()>=1 then remove that element from sum otherwise cout<<0
+in option 2 if vector2.size()>=2 then remove the elements from sum-rem2[0]-rem2[1] or otherwise cout<<0
+res=max(option1,option2)
+5)else rem==2 
+swap the two options 
+res=max(option1,option2)
+6) and in the last return res;
+
+//Solution
+class Solution {
+public:
+    int maxSumDivThree(vector<int>& nums) {
+        int sum=0;
+        sort(nums.begin(),nums.end());
+        vector<int>rem1,rem2;
+        for(int num:nums){
+            sum+=num;
+            if(num%3==1) rem1.push_back(num);
+            else if(num%3==2) rem2.push_back(num);
+        }
+        sort(rem1.begin(),rem1.end());
+        sort(rem2.begin(),rem2.end());
+        if(sum%3==0) return sum;
+        int res=0;
+        if(sum%3==1){
+            int option1=rem1.size()>=1?sum-rem1[0]:0;
+            int option2=rem2.size()>=2?sum-rem2[0]-rem2[1]:0;
+            res= max(option1,option2);
+        }
+        else{
+            int option1=rem2.size()>=1?sum-rem2[0]:0;
+            int option2=rem1.size()>=2?sum-rem1[0]-rem1[1]:0;
+            res= max(option1,option2);
+        }
+        return res;
+    }
+};
